@@ -8,6 +8,7 @@ from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
 import db.database as db
+from handlers import menu_handlers
 from services import ai_service, intent_service
 
 logger = logging.getLogger(__name__)
@@ -36,6 +37,36 @@ async def process_user_message(
     profile = await db.get_profile(chat_id)
     history = await db.recent_messages(chat_id)
     intent, intent_data = intent_service.detect_intent(text)
+
+    # Handle special intents that don't need AI
+    if intent == "menu":
+        if update and context:
+            await menu_handlers.show_main_menu(update, context)
+        return "Menu shown"
+    
+    if intent == "briefing":
+        try:
+            briefing = await ai_service.build_briefing()
+            if update and update.message:
+                await update.message.reply_text(briefing, parse_mode=ParseMode.MARKDOWN)
+            await db.save_message(chat_id, "assistant", briefing)
+            return briefing
+        except Exception as exc:
+            logger.error(f"Briefing failed: {exc}")
+            reply = "Failed to generate briefing. Please try again."
+            if update and update.message:
+                await update.message.reply_text(reply)
+            return reply
+    
+    if intent == "gmail":
+        if update and context:
+            await menu_handlers.show_gmail_menu(update, context)
+        return "Gmail menu shown"
+    
+    if intent == "calendar":
+        if update and context:
+            await menu_handlers.show_calendar_menu(update, context)
+        return "Calendar menu shown"
 
     try:
         reply = await ai_service.generate_reply(

@@ -14,12 +14,12 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from telegram import Update
-from telegram.ext import Application, ApplicationBuilder, CommandHandler, MessageHandler, filters
+from telegram.ext import Application, ApplicationBuilder, CallbackQueryHandler, CommandHandler, MessageHandler, filters
  
 import config
 import db.database as db
 import scheduler as scheduler_module
-from handlers import command_handlers, google_handlers
+from handlers import command_handlers, google_handlers, menu_handlers
 from handlers.document_handler import handle_document
 from handlers.image_handler import handle_image
 from handlers.message_handler import handle_text, process_user_message
@@ -72,6 +72,7 @@ def _build_telegram_app() -> Application:
     )
     application.add_handler(CommandHandler("start", command_handlers.start))
     application.add_handler(CommandHandler("help", command_handlers.help_command))
+    application.add_handler(CommandHandler("menu", command_handlers.menu_command))
     application.add_handler(CommandHandler("briefing", command_handlers.briefing_command))
     
     # Gmail commands
@@ -85,6 +86,9 @@ def _build_telegram_app() -> Application:
     application.add_handler(CommandHandler("calendar_code", google_handlers.calendar_code))
     application.add_handler(CommandHandler("calendar_today", google_handlers.calendar_today))
     application.add_handler(CommandHandler("calendar_week", google_handlers.calendar_week))
+    
+    # Callback query handler for inline buttons
+    application.add_handler(CallbackQueryHandler(menu_handlers.handle_callback_query))
     
     application.add_handler(MessageHandler(filters.PHOTO, handle_image))
     application.add_handler(MessageHandler(filters.VOICE, handle_voice))
