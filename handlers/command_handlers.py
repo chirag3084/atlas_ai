@@ -13,6 +13,9 @@ I can:
 📰 Explain market moves with real news — "Why is Nifty falling today?"
 📑 Summarize earnings reports — just upload a PDF
 🎤 Take voice notes instead of typing
+🖼️ Analyze images of charts and financial documents
+📬 Check your Gmail inbox and read emails
+📅 View your Google Calendar events
 ☀️ Send you a morning briefing at 8 AM IST — or run /briefing anytime
 
 Just talk to me like you would a sharp friend who happens to know markets. What's on your mind?
@@ -24,7 +27,19 @@ HELP_TEXT = """*Commands*
 /help — this message
 /briefing — get a market briefing right now
 
-*Or just talk to me* — ask about a stock price, company fundamentals, market news, upload a PDF earnings report, or send a voice note."""
+*Gmail Commands*
+/gmail_auth — authenticate with Gmail
+/gmail_code <code> — complete Gmail authentication
+/gmail_inbox [count] — show recent emails (default: 5)
+/gmail_read <number> — read full email content
+
+*Calendar Commands*
+/calendar_auth — authenticate with Google Calendar
+/calendar_code <code> — complete Calendar authentication
+/calendar_today — show today's events
+/calendar_week [days] — show upcoming events (default: 7 days)
+
+*Or just talk to me* — ask about a stock price, company fundamentals, market news, upload a PDF earnings report, send a voice note, or share an image."""
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

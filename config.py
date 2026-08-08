@@ -17,6 +17,11 @@ GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "llava-v1.5-7b-4096-prev
 DB_PATH = os.environ.get("DB_PATH", "atlas.db")
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
+# Google OAuth credentials for Gmail and Calendar
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+GOOGLE_REDIRECT_URI = os.environ.get("GOOGLE_REDIRECT_URI", "urn:ietf:wg:oauth:2.0:oob")
+
 TIMEZONE = os.environ.get("TIMEZONE", "Asia/Kolkata")
 BRIEFING_HOUR = int(os.environ.get("BRIEFING_HOUR", "8"))
 BRIEFING_MINUTE = int(os.environ.get("BRIEFING_MINUTE", "0"))

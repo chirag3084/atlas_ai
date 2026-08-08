@@ -19,7 +19,7 @@ from telegram.ext import Application, ApplicationBuilder, CommandHandler, Messag
 import config
 import db.database as db
 import scheduler as scheduler_module
-from handlers import command_handlers
+from handlers import command_handlers, google_handlers
 from handlers.document_handler import handle_document
 from handlers.image_handler import handle_image
 from handlers.message_handler import handle_text, process_user_message
@@ -73,6 +73,19 @@ def _build_telegram_app() -> Application:
     application.add_handler(CommandHandler("start", command_handlers.start))
     application.add_handler(CommandHandler("help", command_handlers.help_command))
     application.add_handler(CommandHandler("briefing", command_handlers.briefing_command))
+    
+    # Gmail commands
+    application.add_handler(CommandHandler("gmail_auth", google_handlers.gmail_auth))
+    application.add_handler(CommandHandler("gmail_code", google_handlers.gmail_code))
+    application.add_handler(CommandHandler("gmail_inbox", google_handlers.gmail_inbox))
+    application.add_handler(CommandHandler("gmail_read", google_handlers.gmail_read))
+    
+    # Calendar commands
+    application.add_handler(CommandHandler("calendar_auth", google_handlers.calendar_auth))
+    application.add_handler(CommandHandler("calendar_code", google_handlers.calendar_code))
+    application.add_handler(CommandHandler("calendar_today", google_handlers.calendar_today))
+    application.add_handler(CommandHandler("calendar_week", google_handlers.calendar_week))
+    
     application.add_handler(MessageHandler(filters.PHOTO, handle_image))
     application.add_handler(MessageHandler(filters.VOICE, handle_voice))
     application.add_handler(MessageHandler(filters.Document.ALL, handle_document))
