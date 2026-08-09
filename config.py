@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "") 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
 # Primary model: fast, used for almost every reply (<300ms target).
